@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabores de Loja — Gastronomía Tradicional</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8962A;
+    --gold-light: #F5E4B3;
+    --gold-dark: #7A5A10;
+    --terracota: #C4522A;
+    --terracota-light: #F0D4C5;
+    --verde: #2D5A27;
+    --verde-light: #C8DFC5;
+    --crema: #FAF6EE;
+    --crema-dark: #EDE5D0;
+    --cafe: #3D2B1A;
+    --cafe-medio: #6B4226;
+    --blanco: #FDFAF4;
+    --negro: #1A1208;
+    --texto: #2E1E0E;
+    --texto-suave: #6B5840;
+    --sombra: rgba(61,43,26,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--crema); color: var(--texto); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(250,246,238,0.96); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-light);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-icon { width: 38px; height: 38px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .nav-logo-icon svg { width: 20px; height: 20px; fill: white; }
+  .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--cafe); letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 0.2rem; align-items: center; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--texto-suave); text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 20px; transition: all 0.2s; letter-spacing: 0.03em; }
+  .nav-links a:hover { color: var(--cafe); background: var(--gold-light); }
+  .nav-cta { background: var(--gold); color: white !important; border-radius: 20px; padding: 0.4rem 1.1rem !important; }
+  .nav-cta:hover { background: var(--gold-dark) !important; color: white !important; }
+  .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+  .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--cafe); border-radius: 2px; transition: all 0.3s; }
+
+  /* HERO */
+  #inicio {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1A0E05 0%, #3D2B1A 40%, #5C3D20 70%, #7A5228 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding-top: 68px;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image: radial-gradient(circle at 20% 50%, #C8962A 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, #C4522A 0%, transparent 40%),
+      radial-gradient(circle at 60% 80%, #2D5A27 0%, transparent 45%);
+  }
+  .hero-texture {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C8962A' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-content { position: relative; z-index: 2; text-align: center; max-width: 780px; padding: 2rem 1.5rem; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(200,150,42,0.2); border: 1px solid rgba(200,150,42,0.4);
+    color: var(--gold-light); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 20px; margin-bottom: 1.5rem;
+    animation: fadeInDown 0.8s ease both;
+  }
+  .hero-badge::before { content: '✦'; font-size: 0.6rem; }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900; color: white; line-height: 1.05;
+    margin-bottom: 0.4rem;
+    animation: fadeInUp 0.9s 0.1s ease both;
+  }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: rgba(255,255,255,0.65); font-weight: 300; font-style: italic;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.9s 0.2s ease both;
+  }
+  .hero-desc {
+    font-size: 1rem; color: rgba(255,255,255,0.55); line-height: 1.7;
+    max-width: 520px; margin: 0 auto 2.5rem;
+    animation: fadeInUp 0.9s 0.3s ease both;
+  }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.9s 0.4s ease both; }
+  .btn-primary {
+    background: var(--gold); color: white; font-weight: 600; font-size: 0.9rem;
+    padding: 0.85rem 2rem; border-radius: 40px; text-decoration: none;
+    letter-spacing: 0.04em; transition: all 0.25s; border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(200,150,42,0.35);
+  }
+  .btn-primary:hover { background: #A87820; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(200,150,42,0.45); }
+  .btn-outline {
+    background: transparent; color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.9rem;
+    padding: 0.85rem 2rem; border-radius: 40px; text-decoration: none;
+    letter-spacing: 0.04em; transition: all 0.25s; border: 1px solid rgba(255,255,255,0.25);
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.5); }
+  .hero-stats { display: flex; gap: 2.5rem; justify-content: center; margin-top: 3.5rem; animation: fadeInUp 0.9s 0.5s ease both; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); }
+  .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.35); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; animation: fadeIn 1.5s 1s ease both; }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.35), transparent); animation: scrollPulse 1.8s ease infinite; }
+
+  /* SECTIONS */
+  section { padding: 6rem 1.5rem; }
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); display: flex; align-items: center; gap: 8px; margin-bottom: 0.8rem;
+  }
+  .section-label::before, .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--cafe); line-height: 1.15; margin-bottom: 1rem; }
+  .section-title em { color: var(--terracota); font-style: italic; }
+  .section-desc { font-size: 1.05rem; color: var(--texto-suave); line-height: 1.75; max-width: 600px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* INTRO STRIP */
+  #intro { background: var(--cafe); color: white; padding: 3rem 1.5rem; }
+  .intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; max-width: 1000px; margin: 0 auto; }
+  .intro-item { padding: 2rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.08); text-align: center; }
+  .intro-item:last-child { border-right: none; }
+  .intro-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .intro-item h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; color: var(--gold); margin-bottom: 0.4rem; }
+  .intro-item p { font-size: 0.87rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  /* FILTER TABS */
+  .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .filter-btn { padding: 0.55rem 1.2rem; border-radius: 24px; font-size: 0.85rem; font-weight: 500; cursor: pointer; border: 1px solid var(--crema-dark); background: white; color: var(--texto-suave); transition: all 0.2s; letter-spacing: 0.02em; }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--gold-light); }
+  .filter-btn.active { background: var(--gold); color: white; border-color: var(--gold); box-shadow: 0 3px 12px rgba(200,150,42,0.3); }
+
+  /* PLATOS GRID */
+  .platos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .plato-card {
+    background: white; border-radius: 16px; overflow: hidden; cursor: pointer;
+    border: 1px solid var(--crema-dark); transition: all 0.3s; position: relative;
+    box-shadow: 0 2px 12px var(--sombra);
+  }
+  .plato-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(61,43,26,0.15); border-color: var(--gold-light); }
+  .plato-img {
+    width: 100%; height: 200px; object-fit: cover; display: block;
+    background: var(--crema-dark);
+  }
+  .plato-img-placeholder {
+    width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; background: linear-gradient(135deg, var(--terracota-light), var(--gold-light));
+  }
+  .plato-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+    color: white; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 12px;
+  }
+  .plato-body { padding: 1.2rem 1.3rem 1.4rem; }
+  .plato-canton { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+  .plato-nombre { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--cafe); margin-bottom: 0.5rem; }
+  .plato-desc { font-size: 0.87rem; color: var(--texto-suave); line-height: 1.6; margin-bottom: 1rem; }
+  .plato-cta { display: inline-flex; align-items: center; gap: 5px; font-size: 0.82rem; font-weight: 600; color: var(--terracota); text-decoration: none; letter-spacing: 0.03em; transition: gap 0.2s; }
+  .plato-card:hover .plato-cta { gap: 8px; }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(26,18,8,0.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: white; border-radius: 20px; max-width: 680px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-header { position: relative; }
+  .modal-img { width: 100%; height: 260px; object-fit: cover; border-radius: 20px 20px 0 0; }
+  .modal-img-placeholder { width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; font-size: 6rem; background: linear-gradient(135deg, var(--terracota-light), var(--gold-light)); border-radius: 20px 20px 0 0; }
+  .modal-close { position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); border: none; color: white; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .modal-close:hover { background: rgba(0,0,0,0.75); }
+  .modal-body { padding: 1.75rem 2rem 2rem; }
+  .modal-canton { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: var(--cafe); margin-bottom: 0.75rem; }
+  .modal-desc { font-size: 0.97rem; color: var(--texto-suave); line-height: 1.75; margin-bottom: 1.5rem; border-bottom: 1px solid var(--crema-dark); padding-bottom: 1.5rem; }
+  .modal-section-title { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cafe); margin-bottom: 0.75rem; }
+  .ingredientes-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .ingrediente-tag { background: var(--gold-light); color: var(--gold-dark); font-size: 0.82rem; padding: 5px 12px; border-radius: 14px; font-weight: 500; }
+  .preparacion { font-size: 0.92rem; color: var(--texto); line-height: 1.8; }
+  .preparacion ol { padding-left: 1.2rem; }
+  .preparacion li { margin-bottom: 0.6rem; }
+
+  /* BEBIDAS & POSTRES */
+  #bebidas { background: var(--cafe); }
+  #bebidas .section-title { color: white; }
+  #bebidas .section-desc { color: rgba(255,255,255,0.6); }
+  #bebidas .section-label { color: var(--gold); }
+  .bebidas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+  .bebida-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; }
+  .bebida-card:hover { background: rgba(200,150,42,0.12); border-color: rgba(200,150,42,0.35); transform: translateY(-3px); }
+  .bebida-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .bebida-nombre { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: white; margin-bottom: 0.4rem; }
+  .bebida-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  #postres { background: var(--crema); }
+  .postres-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .postre-card { background: white; border-radius: 14px; padding: 1.5rem; text-align: center; cursor: pointer; border: 1px solid var(--crema-dark); transition: all 0.3s; box-shadow: 0 2px 10px var(--sombra); }
+  .postre-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(61,43,26,0.14); border-color: var(--gold-light); }
+  .postre-emoji { font-size: 3rem; margin-bottom: 0.75rem; display: block; }
+  .postre-nombre { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--cafe); margin-bottom: 0.4rem; }
+  .postre-desc { font-size: 0.82rem; color: var(--texto-suave); line-height: 1.55; }
+
+  /* RUTA */
+  #ruta { background: linear-gradient(170deg, var(--verde) 0%, #1A3B16 100%); color: white; }
+  #ruta .section-title { color: white; }
+  #ruta .section-label { color: #8FD68B; }
+  #ruta .section-label::before, #ruta .section-label::after { background: #8FD68B; }
+  .ruta-intro { font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.75; max-width: 600px; margin-bottom: 3rem; }
+  .ruta-timeline { position: relative; padding-left: 2rem; }
+  .ruta-timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), rgba(200,150,42,0.2)); }
+  .ruta-parada { position: relative; margin-bottom: 2rem; padding: 1.5rem 1.5rem 1.5rem 1.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; transition: background 0.3s; }
+  .ruta-parada:hover { background: rgba(255,255,255,0.1); }
+  .ruta-parada::before { content: attr(data-num); position: absolute; left: -2.35rem; top: 1.5rem; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); color: white; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .ruta-canton { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 0.3rem; }
+  .ruta-parada h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: white; margin-bottom: 0.5rem; }
+  .ruta-parada p { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.65; }
+  .ruta-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem; }
+  .ruta-tag { background: rgba(200,150,42,0.18); color: var(--gold-light); font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; }
+
+  /* RESTAURANTES */
+  #restaurantes { background: var(--blanco); }
+  .rest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .rest-card { background: white; border: 1px solid var(--crema-dark); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px var(--sombra); transition: all 0.3s; }
+  .rest-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(61,43,26,0.14); }
+  .rest-header { background: linear-gradient(135deg, var(--cafe), var(--cafe-medio)); padding: 1.5rem; }
+  .rest-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: white; font-weight: 600; margin-bottom: 0.25rem; }
+  .rest-rating { display: flex; align-items: center; gap: 4px; font-size: 0.82rem; color: var(--gold); }
+  .rest-rating span { color: rgba(255,255,255,0.6); margin-left: 2px; font-size: 0.78rem; }
+  .rest-body { padding: 1.25rem; }
+  .rest-info { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
+  .rest-info-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.84rem; color: var(--texto-suave); }
+  .rest-info-item strong { color: var(--cafe); font-weight: 500; min-width: 60px; }
+  .rest-map-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 0.7rem; background: var(--gold-light); color: var(--gold-dark); font-size: 0.85rem; font-weight: 600; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: 1px solid rgba(200,150,42,0.25); }
+  .rest-map-btn:hover { background: var(--gold); color: white; }
+  .map-embed-container { margin-top: 3rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--crema-dark); box-shadow: 0 4px 20px var(--sombra); }
+  .map-section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--cafe); margin-bottom: 1.25rem; }
+
+  /* NOSOTROS */
+  #nosotros { background: var(--crema); }
+  .nosotros-top { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-bottom: 5rem; }
+  .equipo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .miembro-card { background: white; border: 1px solid var(--crema-dark); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 2px 12px var(--sombra); transition: transform 0.3s; }
+  .miembro-card:hover { transform: translateY(-4px); }
+  .miembro-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  border: 4px solid var(--gold-light);
+  box-shadow: 0 4px 15px rgba(200,150,42,0.2);
+}
+  .miembro-nombre { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--cafe); margin-bottom: 0.25rem; }
+  .miembro-rol { font-size: 0.8rem; color: var(--gold); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .miembro-desc { font-size: 0.85rem; color: var(--texto-suave); line-height: 1.6; }
+  .logro-banner { background: linear-gradient(135deg, var(--cafe), #5C3D20); border-radius: 14px; padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.25rem; margin-top: 3rem; }
+  .logro-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .logro-text h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold); margin-bottom: 0.3rem; }
+  .logro-text p { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+  .mv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .mv-card { background: white; border-radius: 16px; padding: 2rem; border: 1px solid var(--crema-dark); border-top: 3px solid var(--gold); box-shadow: 0 2px 12px var(--sombra); }
+  .mv-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .mv-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--cafe); margin-bottom: 0.6rem; }
+  .mv-text { font-size: 0.9rem; color: var(--texto-suave); line-height: 1.7; }
+  .valores-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .valor-tag { background: var(--gold-light); color: var(--gold-dark); font-size: 0.82rem; padding: 5px 12px; border-radius: 14px; font-weight: 500; }
+
+  /* FOOTER */
+ footer {
+    background: #0E0A04;
+    padding: 4rem 4rem 2rem;
+    border-top: 1px solid rgba(196,82,26,0.2);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(245,237,216,0.07);
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .footer-brand span { color: var(--terracota); }
+  .footer-tagline {
+    font-size: 0.9rem;
+    color: rgba(245,237,216,0.45);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 280px;
+  }
+  .footer-col-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracota-light);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-links a {
+    color: rgba(245,237,216,0.5);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.78rem;
+    color: rgba(245,237,216,0.3);
+  }
+  .footer-heart { color: var(--terracota); }
+
+  /* ANIMATIONS */
+  @keyframes fadeInDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes fadeInUp { from { opacity:0; transform: translateY(25px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes scrollPulse { 0%,100%{ opacity:0.4; } 50%{ opacity:1; } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--crema); padding: 1rem; border-bottom: 1px solid var(--gold-light); z-index: 999; }
+    .nav-links.open { display: flex; }
+    .nav-toggle { display: flex; }
+    .hero-stats { gap: 1.5rem; }
+    .nosotros-top { grid-template-columns: 1fr; gap: 2rem; }
+    .equipo-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) { .equipo-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#inicio" class="nav-logo">
+  <div class="nav-logo-icon">
+    <img src="https://i.ibb.co/HLj06Tnm/LOGO-SABORES-DE-LOJA.png" 
+         alt="Sabores de Loja" 
+         style="width:38px; height:38px; object-fit:contain;">
+  </div>
+  <span class="nav-logo-text">Sabores de Loja</span>
+</a>
+
+  <div class="nav-links" id="navLinks">
+    <a href="#">Inicio</a>
+    <a href="#platos">Platos</a>
+    <a href="#bebidas">Bebidas</a>
+    <a href="#postres">Postres</a>
+    <a href="#ruta">Ruta</a>
+    <a href="#restaurantes">Restaurantes</a>
+    <a href="#nosotros" class="nav-cta">Nosotros</a>
+  </div>
+  <div class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-texture"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Patrimonio Gastronómico del Ecuador</div>
+    <h1 class="hero-title">Sabores de<br><em>Loja</em></h1>
+    <p class="hero-subtitle">Tradición, identidad y orgullo en cada bocado</p>
+    <p class="hero-desc">Descubre la riqueza culinaria de los 16 cantones de la provincia de Loja. Un viaje sensorial por recetas ancestrales que han sobrevivido generaciones.</p>
+    <div class="hero-btns">
+      <a href="#platos" class="btn-primary">Explorar Platos</a>
+      <a href="#ruta" class="btn-outline">Ruta Gastronómica</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">16</div><div class="stat-label">Cantones</div></div>
+      <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Platos Típicos</div></div>
+      <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Años de Tradición</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Descubre</div>
+</section>
+
+<!-- INTRO STRIP -->
+<div id="intro">
+  <div class="intro-grid">
+    <div class="intro-item"><div class="intro-icon">🌽</div><h3>Cocina Ancestral</h3><p>Recetas transmitidas de generación en generación en las comunidades lojanas</p></div>
+    <div class="intro-item"><div class="intro-icon">🗺️</div><h3>16 Cantones</h3><p>Cada cantón con su identidad culinaria única, producto de su geografía y cultura</p></div>
+    <div class="intro-item"><div class="intro-icon">🌿</div><h3>Ingredientes Locales</h3><p>Productos frescos del campo lojano: maíz, guineo, arveja, borrego y más</p></div>
+    <div class="intro-item"><div class="intro-icon">🏆</div><h3>Patrimonio Cultural</h3><p>Gastronomía reconocida como parte del patrimonio cultural inmaterial del Ecuador</p></div>
+  </div>
+</div>
+
+<!-- PLATOS -->
+<section id="platos">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;margin-bottom:2.5rem;flex-wrap:wrap;">
+      <div>
+        <div class="section-label">Platos Tradicionales</div>
+        <h2 class="section-title">Los Sabores de Cada <em>Cantón</em></h2>
+        <p class="section-desc">Cada plato cuenta una historia. Desde el Repe Lojano hasta el Chivo al Hueco de Zapotillo, la cocina de Loja es un mapa de identidades.</p>
+      </div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filtrarPlatos('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="filtrarPlatos('calvas',this)">Calvas</button>
+      <button class="filter-btn" onclick="filtrarPlatos('catamayo',this)">Catamayo</button>
+      <button class="filter-btn" onclick="filtrarPlatos('loja',this)">Loja</button>
+      <button class="filter-btn" onclick="filtrarPlatos('saraguro',this)">Saraguro</button>
+      <button class="filter-btn" onclick="filtrarPlatos('zapotillo',this)">Zapotillo</button>
+      <button class="filter-btn" onclick="filtrarPlatos('otros',this)">Otros cantones</button>
+    </div>
+    <div class="platos-grid" id="platosGrid"></div>
+  </div>
+</section>
+
+<!-- BEBIDAS -->
+<section id="bebidas">
+  <div class="container">
+    <div class="section-label">Bebidas Típicas</div>
+    <h2 class="section-title">Para Beber como Lojano</h2>
+    <p class="section-desc" style="color:rgba(255,255,255,0.6)">Desde la Horchata aromática hasta el Guarapo de caña, las bebidas lojanas son tan únicas como su tierra.</p>
+    <div class="bebidas-grid" id="bebidasGrid"></div>
+  </div>
+</section>
+
+<!-- POSTRES -->
+<section id="postres">
+  <div class="container">
+    <div class="section-label">Dulces & Postres</div>
+    <h2 class="section-title">El Dulce Final <em>Lojano</em></h2>
+    <p class="section-desc">La repostería tradicional de Loja combina técnicas coloniales con ingredientes autóctonos para crear delicias únicas.</p>
+    <div class="postres-grid" id="postresGrid"></div>
+  </div>
+</section>
+
+<!-- RUTA -->
+<section id="ruta">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+      <div>
+        <div class="section-label">Ruta Gastronómica</div>
+        <h2 class="section-title">Un Viaje por los Sabores de Loja</h2>
+        <p class="ruta-intro">Recorre los puntos más emblemáticos de la provincia siguiendo el rastro de sus platos más representativos. Una experiencia que combina paisaje, cultura y gastronomía en un solo recorrido.</p>
+        <div class="ruta-timeline" id="rutaTimeline"></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;color:white;margin-bottom:1rem;">📍 Información del Recorrido</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-size:1.5rem;">🚗</span>
+            <div><div style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:2px;">Duración estimada</div><div style="color:white;font-weight:500;">2 - 3 días</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-size:1.5rem;">📏</span>
+            <div><div style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:2px;">Distancia total</div><div style="color:white;font-weight:500;">~350 km</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-size:1.5rem;">🌄</span>
+            <div><div style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:2px;">Punto de inicio</div><div style="color:white;font-weight:500;">Ciudad de Loja</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-size:1.5rem;">🍽️</span>
+            <div><div style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:2px;">Paradas</div><div style="color:white;font-weight:500;">8 cantones clave</div></div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.65;">💡 <strong style="color:rgba(255,255,255,0.8);">Consejo:</strong> La mejor época para recorrer la ruta es entre mayo y octubre, temporada de cosechas y festividades locales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESTAURANTES -->
+<section id="restaurantes">
+  <div class="container">
+    <div class="section-label">Dónde Comer</div>
+    <h2 class="section-title">Restaurantes <em>Recomendados</em></h2>
+    <p class="section-desc">Establecimientos de confianza donde podrás disfrutar de la auténtica cocina lojana con la mejor atención.</p>
+    <div class="rest-grid" id="restGrid"></div>
+    <div style="margin-top:4rem;">
+      <h3 class="map-section-title">📍 Ubicación en Loja</h3>
+      <div class="map-embed-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15726.23!2d-79.204!3d-3.9819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cb3b0ad5b44877%3A0xb579929ae88f7f97!2sLoja%2C%20Ecuador!5e0!3m2!1ses!2sec!4v1697000000000!5m2!1ses!2sec"
+          width="100%" height="440" style="border:0;display:block;" allowfullscreen="" loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="container">
+    <div class="section-label">Quiénes Somos</div>
+    <h2 class="section-title">Los Promotores del <em>Proyecto</em></h2>
+    <div class="equipo-grid" id="equipoGrid"></div>
+    <div class="logro-banner">
+      <div class="logro-icon">🥈</div>
+      <div class="logro-text">
+        <h3>2.° Lugar — Datathon WiDS 2025 · Loja Inteligente con las TICs</h3>
+        <p>Nuestro equipo representó a la institución en este concurso organizado por la UTPL, demostrando capacidad de innovación tecnológica y trabajo colaborativo en el campo de la ciencia de datos aplicada al desarrollo local.</p>
+      </div>
+    </div>
+    <div style="margin-top:5rem;">
+      <div class="section-label">Nuestra Propuesta</div>
+      <h2 class="section-title" style="margin-bottom:0.5rem;">Misión, Visión & <em>Valores</em></h2>
+    </div>
+    <div class="mv-grid" id="mvGrid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+    <img src="https://i.ibb.co/HLj06Tnm/LOGO-SABORES-DE-LOJA.png" 
+         alt="Sabores de Loja" 
+         style="width: 70px; height: 70px; object-fit: contain; border-radius: 12px;">
+    <div>
+      <div class="footer-brand"><span>Sabores</span> de Loja</div>
+      <div class="footer-tagline">Preservando la memoria gastronómica del sur del Ecuador. Hecho con orgullo lojano.</div>
+    </div>
+  </div>
+  
+  <div style="margin-top:1.5rem; display:flex; gap:1rem;">
+    <a href="https://www.instagram.com/jxse_10_?igsh=MW41Mmo4aTBjOGVsMQ%3D%3D&utm_source=qr" style="color:rgba(245,237,216,0.4); text-decoration:none; font-size:0.82rem; transition:color 0.3s;" onmouseover="this.style.color='var(--cream)'" onmouseout="this.style.color='rgba(245,237,216,0.4)'">Instagram</a>
+  </div>
+</div>
+    <div>
+      <div class="footer-col-title">Explorar</div>
+      <ul class="footer-links">
+        <li><a href="#platos">Platos Tradicionales</a></li>
+        <li><a href="#bebidas">Bebidas Tradicionales</a></li>
+        <li><a href="#postres">Postres Tradicionales</a></li>
+        <li><a href="#ruta">Ruta Gastronómica</a></li>
+        <li><a href="#restaurantes">Restaurantes</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contacto</div>
+      <ul class="footer-links">
+        <li><a>jpaccha08@gmail.com</a></li>
+        <li><a>+593 98 239 1743</a></li>
+        <li><a>Loja, Ecuador</a></li>
+        <li><a>Colabora con nosotros</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Sabores de Loja. Todos los derechos reservados.</span>
+    <span>Hecho con <span class="footer-heart">♥</span> en Loja, Ecuador</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-header" id="modalHeader"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const platos = [
+  { id:1, canton:'Calvas', nombre:'Molo', tipo:'calvas', imagen: 'https://comidaecuatoriana.com.es/wp-content/uploads/2020/01/Molo-ecuatoriano.jpeg' , desc:'Reconfortante puré de papas con queso y huevo, servido caliente como plato de fuerza en las mesas calveñas.', ingredientes:['Papa chola','Queso fresco','Huevo','Mantequilla','Leche','Cebolla blanca','Sal y comino'], preparacion:'<ol><li>Cocinar las papas peladas hasta que estén bien blandas.</li><li>Escurrir y machacar las papas hasta obtener un puré fino.</li><li>En una sartén, sofreír la cebolla blanca picada en mantequilla.</li><li>Incorporar el sofrito al puré y agregar leche caliente poco a poco.</li><li>Añadir queso rallado y huevos batidos. Mezclar bien a fuego suave.</li><li>Sazonar con sal y comino al gusto. Servir caliente.</li></ol>' },
+  { id:2, canton:'Calvas', nombre:'Madre Olla', tipo:'calvas', imagen:'https://cloudfront-us-east-1.images.arcpublishing.com/infobae/MFJA7DPARZHL3LD36ED4EWLDQI.jpg', desc:'Sopa espesa y nutritiva preparada con vísceras de res o chancho, verduras del huerto y especias locales. Un plato generoso y de sabor profundo.', ingredientes:['Menudo de res','Papa','Yuca','Zanahoria','Cebolla','Ajo','Cilantro','Orégano','Sal','Achiote'], preparacion:'<ol><li>Limpiar y trozar bien el menudo. Cocinar en agua con sal hasta ablandar.</li><li>Agregar papas en cubos, yuca troceada y zanahoria.</li><li>Preparar un refrito con cebolla, ajo y achiote; incorporar a la olla.</li><li>Cocinar a fuego medio 30 minutos más hasta que todo esté suave.</li><li>Finalizar con cilantro y orégano fresco. Ajustar sal y servir.</li></ol>' },
+  { id:3, canton:'Catamayo', nombre:'Cecina', tipo:'catamayo', imagen:'https://catamayo.gob.ec/wp-content/uploads/2020/11/cecina3-1024x626.jpg', desc:'Carne de res o cerdo adobada con especias, secada al sol y asada a la brasa. Clásico de la zona cálida de Catamayo, se sirve con arroz, maduro y ají.', ingredientes:['Carne de res o cerdo (pierna)','Ajo','Comino','Sal','Pimienta','Jugo de naranja agria','Achiote'], preparacion:'<ol><li>Abrir la carne en láminas delgadas tipo mariposa.</li><li>Preparar la marinada con ajo machacado, comino, sal, pimienta, achiote y jugo de naranja agria.</li><li>Marinar la carne por al menos 8 horas o toda la noche en refrigeración.</li><li>Extender al sol 4-6 horas para deshidratar parcialmente.</li><li>Asar a la brasa viva hasta dorar bien por ambos lados. Servir con arroz, yuca o ensalada de cebolla.</li></ol>' },
+  { id:4, canton:'Celica', nombre:'Chanfaina', tipo:'otros', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t39.30808-6/601371193_840331885298703_6150879053784553117_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=zo77LhDP4nUQ7kNvwFk9658&_nc_oc=AdoD10XSPuI4bX-fTUkFIaRuFRgir3OqNrO1VQEdZUBU07uNUguntYyrypLCYyFcPoP8b7Xce66-odzbLymGSNTA&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=kof1Vg3JDwcTFhLhxHmxyw&_nc_ss=7b2a8&oh=00_Af-442BFn86mOpLSt64SyWSx2AdOsgXI9-UjVQYvbtT0Sw&oe=6A23F64D', desc:'Guiso tradicional preparado con vísceras (pulmón, corazón, hígado) de cordero o cerdo, cocido con especias aromáticas. Herencia de la cocina colonial española adaptada al producto local.', ingredientes:['Vísceras de cordero o cerdo','Cebolla','Ajo','Tomate','Pimiento','Laurel','Comino','Orégano','Achiote','Vinagre','Sal y pimienta'], preparacion:'<ol><li>Lavar y sancochar las vísceras con agua, sal y laurel hasta ablandar.</li><li>Cortar en trozos pequeños y reservar.</li><li>Sofreír cebolla, ajo, tomate y pimiento con achiote hasta dorar.</li><li>Incorporar las vísceras al sofrito. Agregar comino, orégano y un chorro de vinagre.</li><li>Cocinar a fuego suave 20 minutos. Servir con arroz blanco y papas cocidas.</li></ol>' },
+  { id:5, canton:'Chaguarpamba', nombre:'Molloco', tipo:'otros', imagen:'https://img-global.cpcdn.com/recipes/b3b97db4c9523557/680x781cq80/molloco-de-platano-maduro-%F0%9F%91%A8%F0%9F%8D%B3-foto-principal.jpg', desc:'Es un plato tradicional que consiste en una masa suave pero compacta hecha a base de plátano cocinado y pasta de maní, que se sirve caliente para el desayuno.', ingredientes:['Maní','Plátano Verde','Sal','Manteca de chancho', 'Huevos'], preparacion:'<ol><li>Pele los plátanos y cocínelos hasta que estén suaves. Escúrralos, páselos a una fuente y tritúrelos calientes hasta que pierdan los granos gruesos.</li><li>Caliente la manteca en una olla y fría la cebolla picada, hasta que esté transparente. Añada los huevos batidos, el plátano aplastado y la sal. Revuelva todo manteniéndolo a fuego suave hasta lograr unirlo bien.</li><li>Finalmente, incorpore el queso desmenuzado y deje la preparación en el fuego unos minutos más, para servir caliente. </li><li>Incorporar el fréjol cocido al sofrito, agregar un poco del caldo de cocción.</li><li>Cocinar 10 minutos más. Terminar con cilantro picado. Acompañar con arroz o yuca. Adorne al gusto y acompañe con salsa de maní o de cebolla.</li></ol>' },
+  { id:6, canton:'Espíndola', nombre:'Sango de Maíz', tipo:'otros', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t1.6435-9/161078810_502941014425311_8193964263988773413_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=NsCFPGU7TOsQ7kNvwGV-ivc&_nc_oc=Ado1_CSBEI8pjlC8SZaRTC9p5FTusG8L_O3qnZNkYe5bZY0YyipnrHZIn0NuW9doqsjnWCH2L6qtX1sQIzwJftpd&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=CaqmmDQw4mUBFHXZFu5rEA&_nc_ss=7b2a8&oh=00_Af-EIht63RgoCRZgnt7ZvEO7pkpuALxkuL4jg3U-neTzGg&oe=6A459AAC', desc:'Es un plato tradicional de la gastronomía lojana, caracterizado por su sabor único, que lo convierte en una opción apetecible a cualquier hora del día, aunque hay quienes lo prefieren como parte del desayuno.', ingredientes:['Ajo','Cebolla','Huevo','Mantequilla','Harina de maíz','Sal','Comino','Agua'], preparacion:'<ol><li>Agregar la harina molida de maíz en agua en una olla a fuego lento.</li><li>Dejar hervir y poner la harina poco a poco.</li><li>Dejar que coja textura, ni muy espesa ni muy dura.</li><li>Por último agregar huevo frito y fritada o chicharrón según el gusto del cliente.</li></ol>' },
+  { id:7, canton:'Gonzanamá', nombre:'Arveja con Guineo', tipo:'otros', imagen:'https://i.ytimg.com/vi/PdB7ImPgBYc/maxresdefault.jpg', desc:'Combinación sorprendente de arvejas tiernas cocidas con plátano verde o guineo, sazonadas con cebolla y especias. Reflejo del ingenio culinario lojano con los productos de la zona.', ingredientes:['Arveja tierna','Guineo verde o plátano','Cebolla','Ajo','Achiote','Sal','Cilantro','Manteca'], preparacion:'<ol><li>Pelar y trozar el guineo verde. Cocinar en agua con sal hasta ablandar.</li><li>En otra olla, cocinar la arveja hasta estar tierna.</li><li>Preparar un refrito con manteca, cebolla, ajo y achiote.</li><li>Unir el guineo y la arveja en el refrito. Agregar caldo al gusto.</li><li>Cocinar 10 minutos más. Finalizar con cilantro. Servir como sopa o guiso.</li></ol>' },
+  { id:8, canton:'Loja', nombre:'Repe Lojano', tipo:'loja', imagen:'https://lacomidaecuatoriana.com/wp-content/uploads/2018/11/Receta-del-repe-lojano.jpg', desc:'La sopa emblema de Loja. Preparada con guineo verde, queso fresco, cilantro. Cremosa, reconfortante y profundamente identitaria. Declarada parte del patrimonio culinario local.', ingredientes:['Guineo verde (plátano verde)','Queso fresco','Cebolla blanca','Cilantro','Mantequilla','Sal','Comino'], preparacion:'<ol><li>Pelar y picar el guineo verde en rodajas.</li><li>Sofreír cebolla blanca picada en mantequilla hasta transparente.</li><li>Agregar el guineo y cubrir con agua. Cocinar 20 minutos hasta ablandar bien.</li><li>Aplastar ligeramente el guineo para espesar la sopa. Verter la leche caliente.</li><li>Agregar el queso desmenuzado y cilantro picado.</li><li>Sazonar con sal y comino. Cocinar 5 minutos más y servir.</li></ol>' },
+  { id:9, canton:'Loja', nombre:'Tamal Lojano', tipo:'loja', imagen:'https://ec.viajandox.com/uploads/attractive_1975.jpg', desc:'Preparación festiva de masa de maíz rellena de carne de cerdo, zanahoria y arvejas, envuelta en hoja de achira y cocida al vapor. Infaltable en fiestas y reuniones familiares lojanas.', ingredientes:['Masa de maíz molido','Carne de cerdo','Zanahoria','Arveja','Cebolla','Ajo','Achiote','Huevo duro','Hojas de achira','Sal y especias'], preparacion:'<ol><li>Preparar la masa mezclando maíz molido con manteca, caldo y sal hasta obtener consistencia manejable.</li><li>Guisar la carne con cebolla, ajo, achiote, zanahoria y arvejas.</li><li>Extender masa sobre hoja de achira lavada. Colocar relleno y trozo de huevo duro en el centro.</li><li>Doblar la hoja formando el tamal y atar con tira de la misma hoja.</li><li>Cocer al vapor durante 60-80 minutos. Servir caliente.</li></ol>' },
+  { id:10, canton:'Loja', nombre:'Gallina Cuyada', tipo:'loja', imagen:'https://media-cdn.tripadvisor.com/media/photo-s/0f/14/02/50/deliciosa-gallina-cuyada.jpg', desc:'Gallina criolla cocida en caldo aromático de hierbas lojanas, con papa, yuca y aderezos locales. La "cuya" se refiere al modo tradicional de cocción lenta que concentra todos los sabores.', ingredientes:['Gallina criolla entera','Papa','Yuca','Cebolla','Ajo','Culantro seco','Orégano','Comino','Achiote','Sal'], preparacion:'<ol><li>Limpiar la gallina y trozar en piezas. Sazonar con ajo, sal y comino.</li><li>Sofreír con cebolla y achiote en olla grande.</li><li>Cubrir con agua y cocinar a fuego suave por 1.5-2 horas hasta que la carne esté muy tierna.</li><li>Agregar papa en trozos y yuca en la última media hora.</li><li>Sazonar con culantro seco y orégano. Servir con el caldo abundante.</li></ol>' },
+  { id:11, canton:'Macará', nombre:'Ceviche de Carne', tipo:'otros', imagen:'https://img-global.cpcdn.com/recipes/98bbfcdc5d0e7cf2/1200x630cq80/photo.jpg', desc:'Versión original y única del ceviche, preparado con carne de res marinada en jugo de limón y naranja agria, con cebolla morada, cilantro y ají. Una rareza gastronómica propia de Macará.', ingredientes:['Carne de res (lomo o pierna)','Limón','Naranja agria','Cebolla morada','Cilantro','Ají','Tomate','Sal y pimienta','Aceite'], preparacion:'<ol><li>Cocinar la carne hasta término medio. Dejar enfriar y cortar en cubos pequeños.</li><li>Marinar la carne con jugo de limón y naranja agria por 30 minutos.</li><li>Agregar cebolla morada en pluma, tomate picado y cilantro.</li><li>Condimentar con ají picado, sal y pimienta. Mezclar bien.</li><li>Refrigerar 15 minutos antes de servir. Acompañar con chifles o tostados.</li></ol>' },
+  { id:12, canton:'Olmedo', nombre:'Estofado de Gallina Criolla', tipo:'otros', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t1.6435-9/72696034_142907137095369_7044380160878968832_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=iCop72FUucQQ7kNvwFrkEIs&_nc_oc=Adp1sy2vyLAtJNae3_KsvDULQZ7UFpEt9q_CNT2-FfShbSOzsFjgz04s4J13LJfQjufJNLhDeY2lX4Xte-7mu4GX&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=hpeUc4g9tfojrHvGbIFmUw&_nc_ss=7b2a8&oh=00_Af-RCBGzAIoz7vpl6R3v4CUSgn_l0_FPBlCjKQyWfkr_nA&oe=6A45B524', desc:'Guiso de gallina de campo en salsa de tomate y especias dulces, con papas y zanahorias. La gallina criolla de Olmedo tiene un sabor inigualable por la crianza libre en campo abierto.', ingredientes:['Gallina criolla','Tomate','Cebolla','Ajo','Pimiento','Zanahoria','Papa','Comino','Canela','Clavo','Sal y pimienta'], preparacion:'<ol><li>Trozar y sazonar la gallina. Dorar en aceite caliente hasta sellar bien.</li><li>Retirar la gallina y en el mismo aceite sofreír cebolla, ajo, pimiento y tomate.</li><li>Agregar especias: comino, una pizca de canela y clavo. Cocinar 5 minutos.</li><li>Volver a poner la gallina, cubrir con agua y cocinar 45 minutos.</li><li>Añadir papas y zanahoria en trozos. Terminar la cocción. Servir con arroz.</li></ol>' },
+  { id:13, canton:'Paltas', nombre:'Asado de Borrego', tipo:'otros', imagen:'https://origenesecuador.com/wp-content/uploads/2014/04/P1210722.jpg', desc:'Borrego entero asado a la brasa durante horas, marinado con ajo, comino y hierbas aromáticas. Plato de celebración y festividades en el cantón Paltas, de sabor intenso e inconfundible.', ingredientes:['Borrego entero o en piezas','Ajo','Comino','Orégano','Sal gruesa','Jugo de naranja agria','Achiote','Chicha de maíz'], preparacion:'<ol><li>Preparar marinada con ajo, sal, comino, orégano, achiote y chicha de maíz. Frotar bien en toda la carne.</li><li>Dejar reposar en marinada mínimo 12 horas en lugar fresco.</li><li>Preparar brasa con leña de eucalipto. Cuando esté en brasas vivas, colocar el borrego.</li><li>Asar girando continuamente durante 3-4 horas, bañando con la marinada restante.</li><li>Servir con mote, papas y ají de mesa.</li></ol>' },
+  { id:14, canton:'Paltas', nombre:'Sancocho de Res', tipo:'otros', imagen:'https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/b3f1cd69ff9ee07d1be495e55820ab05.png', desc:'Sopa espesa con trozos de res, yuca, plátano verde, maíz y hierbas locales. Plato completo y nutritivo que se sirve en porciones generosas, propio de la cocina campesina de Paltas.', ingredientes:['Carne de res (costilla)','Yuca','Plátano verde','Maíz tierno','Zanahoria','Cebolla','Cilantro','Ajo','Sal y comino'], preparacion:'<ol><li>Cocinar la costilla de res en agua con ajo, sal y comino por 1 hora.</li><li>Agregar yuca en trozos grandes, plátano verde partido y maíz desgranado.</li><li>Añadir zanahoria y cebolla. Cocinar 30 minutos más.</li><li>Rectificar sazón. Servir en plato hondo con abundante caldo y cilantro fresco.</li></ol>' },
+  { id:15, canton:'Pindal', nombre:'Sambates', tipo:'otros', imagen:'https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/1cc893b40a057539e03d2d9778a0df15.jpg', desc:'Bollos de maíz cocidos o asados, preparados con masa de maíz suave mezclada con quesillo y sal. Snack tradicional y desayuno típico del cantón Pindal, de elaboración artesanal.', ingredientes:['Maíz amarillo molido (masa)','Quesillo fresco','Manteca de chancho','Sal','Hojas de plátano'], preparacion:'<ol><li>Moler el maíz amarillo seco hasta obtener masa fina.</li><li>Mezclar la masa con manteca derretida, sal y quesillo desmenuzado.</li><li>Amasar bien hasta obtener consistencia homogénea y moldeable.</li><li>Formar bollos ovalados. Envolver en hoja de plátano.</li><li>Cocinar en parrilla o brasa suave durante 20 minutos, volteando a mitad.</li></ol>' },
+  { id:16, canton:'Puyango', nombre:'Longaniza', tipo:'otros', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t39.30808-6/494681344_1257735026358292_1174972535807744579_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=KtW0TQvCSp0Q7kNvwFFzlRg&_nc_oc=Adoc3u4FOSKPPg_ncfFVYPdN30_act1Qzqa-b7FxLwUNGY1d6Ix7dzj5BYsxz7QMUSSUz-oJg3atxvE8ekldKNhn&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=ZTAg8gcHD1ufziXpwb4sZw&_nc_ss=7b2a8&oh=00_Af_OqaVDtLlEx9oc1CjMTkvJHmlpe18lA9WeLy5u83Dn6w&oe=6A2420DF', desc:'Embutido artesanal de carne de cerdo sazonado con hierbas y especias locales, embutido en tripa natural. La longaniza de Puyango es reconocida por su sabor ahumado y su calidad artesanal.', ingredientes:['Carne de cerdo molida','Tripa natural de cerdo','Ajo','Comino','Orégano','Achiote','Vinagre','Sal y pimienta'], preparacion:'<ol><li>Condimentar la carne molida con ajo machacado, comino, orégano, achiote, vinagre, sal y pimienta.</li><li>Mezclar bien y dejar reposar 2 horas para que tomen sabor las especias.</li><li>Limpiar la tripa natural con agua y limón. Embutir la mezcla de carne.</li><li>Amarrar en porciones de 10-12 cm. Secar al sol o ahumar 24 horas.</li><li>Cocinar a la parrilla o fritar antes de consumir.</li></ol>' },
+  { id:17, canton:'Quilanga', nombre:'Sancocho de Cungatullo', tipo:'otros', imagen:'https://sopasecuatorianas.com/wp-content/uploads/2022/01/sancocho-de-cerdo-min.png', desc:'Sopa preparada con carne de cungatullo (espinazo del cerdo), yuca, plátano y hierbas. Plato de origen ancestral, considerado un manjar por su sabor único en la zona.', ingredientes:['Cungatullo','Yuca','Plátano verde','Cebolla','Ajo','Cilantro','Sal','Comino'], preparacion:'<ol><li>Limpiar bien el cungatullo. Trozar y salar.</li><li>Cocinar en agua con cebolla, ajo y sal hasta que la carne se ablande.</li><li>Agregar yuca en trozos y plátano verde cortado.</li><li>Cocinar 20 minutos más hasta todo esté tierno.</li><li>Añadir cilantro fresco. Servir caliente con el caldo.</li></ol>' },
+  { id:18, canton:'Saraguro', nombre:'Cuy Asado', tipo:'saraguro', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t1.6435-9/120997357_3926397224056379_2986208684806927667_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=109&ccb=1-7&_nc_sid=3a1ebe&_nc_ohc=f4rFZRWSZMMQ7kNvwH3PQA2&_nc_oc=Adq1RBIOs-rE4W90i1A3lobvX837pwJv2Py8wcF07rcogYr_qP8UhWya36exIzLOKT-Wyxkd4mldqU5YBdt2bmlv&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=H_8uRYWFzT9o71NM0W50AA&_nc_ss=7b2a8&oh=00_Af-0srmg22TY2K5VGqMWtyUbuDXU6sCRUGaG9q26YB94jQ&oe=6A45C038', desc:'El cuy asado es el plato más sagrado de la cultura Saraguro. Preparado entero a la brasa con ajo, comino y chicha, es símbolo de celebración y ofrenda en la cosmovisión kichwa lojana.', ingredientes:['Cuy entero limpio','Ajo','Comino','Sal','Chicha de jora','Achiote','Hierba buena'], preparacion:'<ol><li>Limpiar y lavar el cuy. Frotarlo con ajo machacado, sal, comino y achiote.</li><li>Dejar marinar con chicha de jora y hierbabuena por 4-6 horas.</li><li>Ensartar en espeto de madera resistente atravesando desde la cabeza.</li><li>Asar a fuego de leña, girando constantemente, durante 1-1.5 horas.</li><li>La piel debe quedar dorada y crocante. Servir con papas con cuero, mote y ají.</li></ol>' },
+  { id:19, canton:'Saraguro', nombre:'Tortillas de Gualo', tipo:'saraguro', imagen:'https://origenesecuador.com/wp-content/uploads/2023/12/Tortillas-de-gualo-Cera.png', desc:'Tortillas de maíz preparadas en tiesto de barro, rellenas de quesillo fresco. El gualo es el maíz propio de la cultura Saraguro, de grano grande y sabor diferente al maíz comercial.', ingredientes:['Maíz gualo molido','Quesillo fresco','Manteca de chancho','Sal','Agua tibia'], preparacion:'<ol><li>Moler el maíz gualo seco hasta obtener harina fina.</li><li>Mezclar con manteca, sal y agua tibia hasta formar masa firme.</li><li>Dividir en porciones. Aplanar cada una formando disco.</li><li>Colocar quesillo desmenuzado en el centro y cerrar. Aplanar nuevamente.</li><li>Cocinar en tiesto de barro caliente o sartén seca, 4-5 minutos por lado.</li></ol>' },
+  { id:20, canton:'Sozoranga', nombre:'Hornado de Gallina Criolla', tipo:'otros', imagen:'https://www.eluniverso.com/resizer/v2/Q2POIO4WURECDNH6WIYSL7JYUY.jpg?auth=3a3f3514bf19ea39566cc48845fe7b02a4991a203aaf8f666f512bd4946be199&width=1016&height=670&quality=75&smart=true', desc:'Gallina criolla horneada entera con adobo de especias andinas y recado lojano, bañada continuamente durante la cocción. Plato de fiesta por excelencia en el cantón Sozoranga.', ingredientes:['Gallina criolla entera','Ajo','Comino','Achiote','Orégano','Naranja agria','Sal','Cebolla','Manteca'], preparacion:'<ol><li>Preparar adobo con ajo, comino, achiote, orégano, sal y naranja agria.</li><li>Frotar la gallina entera con el adobo por dentro y por fuera.</li><li>Dejar marinar 12 horas en refrigeración.</li><li>Colocar en bandeja. Hornear a 180°C por 1.5-2 horas, bañando con su jugo cada 20 min.</li><li>Servir con mote, papa y ají criollo.</li></ol>' },
+  { id:21, canton:'Zapotillo', nombre:'Chivo al Hueco', tipo:'zapotillo', imagen:'https://origenesecuador.com/wp-content/uploads/2023/12/Chivo-al-Huevo-Cazaderos.jpeg', desc:'El plato más emblemático del sur de Loja. El chivo se entierra en un hueco cavado en tierra, sobre brasas ardientes, y se cocina durante horas. El resultado es una carne incomparablemente tierna y jugosa.', ingredientes:['Chivo entero o en piezas grandes','Ajo','Comino','Sal','Orégano','Naranja agria','Achiote','Leña de algarrobo'], preparacion:'<ol><li>Cavar un hueco en tierra de 1m de diámetro y 0.5m de profundidad.</li><li>Encender leña en el hueco 3-4 horas antes para calentar bien la tierra y brasas.</li><li>Marinar el chivo con ajo, sal, comino, achiote, orégano y naranja agria.</li><li>Envolver el chivo en hojas de plátano para protegerlo.</li><li>Colocar sobre las brasas en el hueco. Cubrir con tierra y brasas encima.</li><li>Cocinar 4-6 horas. La carne queda con textura única, ahumada y tierna.</li></ol>' }
+];
+
+const bebidas = [
+  { nombre:'Horchata', imagen:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIDmkYQgzOfcyv7EpWFWqP0eHX_DNsFaBVcrvmkRJPsUvBQiX3klMA5d13kGKyLh7uhhjB88DsqEzzibRPCPQCcovLcjWeMROe8DcqbQIVmUD8ULmAlTh_V7B4m0nYhJn65CWCFv9COAyg/s1600/horchata_tea.jpg', desc:'Infusión aromática de más de 30 hierbas medicinales y flores silvestres de los Andes lojanos. Rosa, cedrón, menta, toronjil y otras plantas forman esta bebida símbolo de Loja, servida fría o caliente.', ing:['Rosas de Castilla','Cedrón','Menta','Toronjil','Malva','Cola de caballo','Canela','Azúcar'], prep:'Mezclar las hierbas secas. Hervir agua y verter sobre las hierbas. Dejar reposar 10 minutos. Colar, endulzar y servir fría o caliente.' },
+  { nombre:'Café Lojano', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t39.30808-6/305841313_416577500463487_3931019064259767723_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=FF7ahTOjmjAQ7kNvwE9P26U&_nc_oc=AdrtEGuQRTOY8GWfFN6CB_rDs_jjcUz7HVDPKqjLMrsw9SiOy8jcm6G7V2r5V2GeifQLdA0ESp6WtwvpIjBSYvlS&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=AKhuj90gnxXJYFtzEeyAXA&_nc_ss=7b2a8&oh=00_Af-BUHA0gtTqyISyx7mHwMldO1JDDYw6pHFlD6XR-T9Orw&oe=6A24313F', desc:'El café de Loja es reconocido como uno de los mejores del Ecuador. Cultivado en los valles de Malacatos y Vilcabamba, tiene notas de frutos rojos, chocolate y caramelo. Se sirve negro o con leche.', ing:['Café en grano lojano (tostado artesanal)','Agua pura de manantial','Azúcar al gusto'], prep:'Tostar los granos hasta punto medio-oscuro. Moler fino. Preparar en cafetera o coladero de tela. Servir inmediatamente.' },
+  { nombre:'Guarapo', imagen:'https://www.lahora.com.ec/__export/1744741254922/sites/lahora/img/2025/04/15/20250415_122051625_Guarapox_una_bebida_refrescante_y_energizante.jpg_423682103.jpg', desc:'Bebida fermentada natural obtenida del jugo de caña de azúcar. Refrescante y ligeramente alcohólica, es la bebida del campo lojano, infaltable en faenas y celebraciones rurales.', ing:['Caña de azúcar fresca','Agua','Jugo de limón (opcional)'], prep:'Exprimir o triturar la caña de azúcar para extraer el jugo. Dejar fermentar 24-48 horas a temperatura ambiente. Servir frío.' },
+  { nombre:'Diamantina', imagen:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3APVdfn-mnxlmcGA-a9uk4HJwFkAhXu2P9A&s', desc:'Es un licor cremoso artesanal originario del cantón Gonzanamá, en la provincia de Loja. Destaca por su textura suave, su dulzor equilibrado y un sutil aroma herbal que la vuelve muy refrescante pese a su contenido alcohólico', ing:['Licor','Azucar','Leche de vaca', 'Canela'], prep:'Para preparar una diamantina sin alcohol, hierve un litro de leche con azúcar y canela por cinco minutos, déjala enfriar por completo, retira la canela, incorpora una cantidad de licor para darle el sabor característico y refrigera la mezcla durante dos horas antes de servir.' },
+  { nombre:'Mishki', imagen:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsTvNBQpR82sXlwYA0AuojODsENWSgreAG_g&s', desc:'Dulce bebida elaborada con zumo de caña de azúcar sin fermentar, miel de abeja y especias andinas. "Mishki" significa "dulce" en kichwa. Bebida nutritiva de la cultura Saraguro.', ing:['Jugo de caña fresco','Miel de abeja','Canela','Clavo','Anís'], prep:'Calentar el jugo de caña a fuego suave. Agregar miel, canela, clavo y anís. No dejar hervir. Servir tibio o frío.' },
+  { nombre:'Jugo de Caña', imagen:'https://www.guatemala.com/wp-content/uploads/2021/03/Descripci%C3%B3n-de-foto-Se-ve-un-vaso-pl%C3%A1stico-con-jugo-de-ca%C3%B1a-colocado-sobre-ca%C3%B1as-de-az%C3%BAcar-y-de-fondo-m%C3%A1s-ca%C3%B1as.-Cr%C3%A9dito-de-foto-Valencia-Plaza.jpg', desc:'Jugo puro extraído en trapiche artesanal de madera de la caña de azúcar cultivada en los valles calientes de Loja como Catamayo y Macará. Refrescante y energizante, se sirve con hielo y limón.', ing:['Caña de azúcar fresca','Hielo','Limón al gusto'], prep:'Pasar los tallos de caña por el trapiche o exprimidor para extraer el jugo. Servir inmediatamente sobre hielo con un toque de limón.' }
+];
+
+const postres = [
+  { nombre:'Bizcochuelos', imagen:'https://us-east-1-prod-treinta-assets-bucket.s3.amazonaws.com/stores/f8beb32a-d5c4-4f62-80d0-87e4c4a5e66e/product_photos/1665980638595.png', desc:'Galletas suaves de harina de maíz y huevo, tradicionales de Loja. Se hornean hasta dorar y tienen textura esponjosa. Típicas para el desayuno o merienda, se venden en las panaderías artesanales.' },
+  { nombre:'Miel con Quesillo', imagen:'https://i.pinimg.com/736x/8a/2e/b2/8a2eb2815417e1cf72921d24fe83432f.jpg', desc:'Postre sencillo y delicioso: quesillo fresco de hacienda bañado en miel de panela o miel de caña caliente. La combinación dulce-salada es el cierre perfecto de un almuerzo lojano.' },
+  { nombre:'Bocadillos', imagen:'https://www.viajesvistalsur.com/Portals/0/Productos%20y%20servicios/BOCADILLOS5.JPG', desc:'Dulce artesanal compacto elaborado con jugo de caña concentrado y maní tostado molido. Los bocadillos lojanos son famosos en todo el Ecuador por su sabor intenso y textura única.' },
+  { nombre:'Alfeñiques', imagen:'https://www.lahora.com.ec/__export/1744845582088/sites/lahora/img/2025/04/16/20250416_051930506_Juan_Guamxn_encontrx_su_verdadera_vocacixn_en_las_melcochas.jpg_1902800913.jpg', desc:'Caramelos artesanales de azúcar de caña trenzados y estirados a mano hasta obtener una textura aireada y crujiente. Son herencia de la repostería colonial y se elaboran en festividades y ferias.' },
+  { nombre:'Roscones', imagen:'https://scontent.floh2-1.fna.fbcdn.net/v/t1.6435-9/158678335_1124110964766896_248033385379380760_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=107&ccb=1-7&_nc_sid=3a1ebe&_nc_ohc=IptEngWyLCQQ7kNvwEmNtDp&_nc_oc=AdrsX8PUaSTvJjHInC_VITk1eLXpYmmFyzh8Ki7SgaBOm0HSr9Aow9nkDOsUqgOIiRZy-ej_rgQ98MtuQAz7W01o&_nc_zt=23&_nc_ht=scontent.floh2-1.fna&_nc_gid=8UwNLajSKr6fQXsZBVwNPA&_nc_ss=7b2a8&oh=00_Af8ToYFwJoh2QG_cFAbOp1wXzR9nM_G_garxVsTEC31b-A&oe=6A46F1DF', desc:'Pan dulce en forma de rosca elaborado con harina, huevos, manteca y anís. Los roscones lojanos son especialmente tiernos y aromáticos, ideales para acompañar el café o la horchata.' },
+  { nombre:'Turrones', imagen:'https://img.goraymi.com/2019/11/19/603f75869afd794c7bdf75edf30afa46_xl.jpg', desc:'Dulce artesanal de maní, miel o azúcar y especias, prensado en moldes de madera. Los turrones de Loja se elaboran siguiendo recetas de más de 200 años, con técnicas transmitidas de generación en generación.' }
+];
+
+const ruta = [
+  { num:1, canton:'Loja (Ciudad)', plato:'Repe Lojano · Tamal Lojano · Gallina Cuyada', desc:'Comienza tu ruta en la capital provincial. Inicia con un reconfortante Repe en los mercados del centro histórico. No pierdas el Tamal Lojano en las ventas de la Plaza de San Sebastián y cierra con Gallina Cuyada en un restaurante de cocina típica.', tags:['Repe','Tamal','Gallina Cuyada','Horchata'] },
+  { num:2, canton:'Saraguro', plato:'Cuy Asado · Tortillas de Gualo', desc:'A 1 hora de Loja, Saraguro te recibe con la cultura kichwa más vibrante. El Cuy asado en espeto es el plato sagrado del pueblo Saraguro, acompañado de papas con cuero y mote. Las Tortillas de Gualo son perfectas para el desayuno en las tiendas indígenas.', tags:['Cuy','Tortillas','Chicha de Jora','Cultura Kichwa'] },
+  { num:3, canton:'Catamayo', plato:'Cecina · Café Lojano', desc:'El valle caliente de Catamayo es la cuna del café lojano. Visita los cafetales y degusta un café recién tostado. La Cecina a la brasa con arroz y maduro frito es el almuerzo obligatorio en la zona.', tags:['Cecina','Café','Guarapo','Valle Caliente'] },
+  { num:4, canton:'Calvas (Cariamanga)', plato:'Molo · Madre Olla', desc:'Cariamanga, capital de Calvas, ofrece el Molo y la Madre Olla como sus platos insignia. Recorre el mercado local donde las "mamitas" cocinan estas recetas centenarias cada mañana desde temprano.', tags:['Molo','Madre Olla','Diamantina'] },
+  { num:5, canton:'Paltas (Catacocha)', plato:'Asado de Borrego · Sancocho de Res', desc:'Catacocha es tierra de festivales gastronómicos. El asado de borrego se prepara en fiestas locales con técnicas de brasa tradicional. El Sancocho de Res es el plato del almuerzo familiar dominical.', tags:['Borrego','Sancocho','Mishki'] },
+  { num:6, canton:'Macará', plato:'Ceviche de Carne', desc:'En la frontera con Perú, Macará sorprende con su único Ceviche de Carne, influenciado por la gastronomía fronteriza. Plato refrescante perfecto para el clima caliente de esta ciudad comercial.', tags:['Ceviche de Carne','Jugo de Caña','Frontera Sur'] },
+  { num:7, canton:'Zapotillo', plato:'Chivo al Hueco', desc:'El punto culminante de la ruta. El Chivo al Hueco de Zapotillo es legendario en todo Ecuador. Se prepara en ceremonias especiales y la espera de horas de cocción bajo tierra hace la experiencia aún más especial.', tags:['Chivo al Hueco','Guarapo','Algarrobo'] },
+  { num:8, canton:'Puyango', plato:'Longaniza · Bosque Petrificado', desc:'Regresa por Puyango, hogar del Bosque Petrificado más importante de Latinoamérica. Lleva contigo Longaniza artesanal para el viaje, el mejor recuerdo gastronómico de la ruta lojana.', tags:['Longaniza','Bocadillos','Bosque Petrificado'] }
+];
+
+const restaurantes = [
+  { nombre:'Mama Lola', direccion:'Av. Salvador Bustamante Celi & Santa Rosa, Loja', rating:4.6, reviews:2566, horario:'Lun–Sáb 12:00–22:00 · Dom 12:00–16:00', telefono:'+593 98 948 5586', maps:'https://maps.google.com/?q=Mama+Lola+Loja+Ecuador', lat:-3.977932, lng:-79.2010121 },
+  { nombre:'El Recreo Restaurante', direccion:'Loja, Ecuador (zona céntrica)', rating:4.4, reviews:473, horario:'Lun–Vie 11:00–21:00 · Sáb–Dom 10:00–16:00 (Dom)', telefono:'+593 98 152 3040', maps:'https://maps.google.com/?q=El+Recreo+Restaurante+Loja+Ecuador', lat:-3.9777, lng:-79.2001 },
+  { nombre:'Salón Lolita', direccion:'Salvador Bustamante Celi, Loja', rating:4.5, reviews:1408, horario:'Lun–Sáb 11:30–22:00 · Dom 11:30–17:00', telefono:'+593 7-257-5603', maps:'https://maps.google.com/?q=Salon+Lolita+Loja+Ecuador', lat:-3.9809, lng:-79.2017 },
+  { nombre:'Brasa & Leña Restaurante', direccion:'Calle 10 de Agosto entre Olmedo y Juan José Peña, Loja', rating:4.5, reviews:278, horario:'Lun–Vie 12:00–22:00 · Sáb–Dom 11:00–22:00 (Dom 16:00)', telefono:'+593 98 724 1767', maps:'https://maps.google.com/?q=Brasa+Lena+Restaurante+Loja+Ecuador', lat:-3.9970, lng:-79.1996 }
+];
+
+const equipo = [
+  { 
+    nombre:'José Paccha', 
+    imagen: 'https://i.ibb.co/1Yr6hnPB/JOS-PACCHA.jpg',
+    rol:'Estudiante 3ro BTI "E"', 
+    desc:'Investigador y promotor del proyecto' 
+ 
+  },
+  { 
+    nombre:'Santiago Ramos', 
+    imagen: 'https://i.ibb.co/b5Qg08Yx/SANTIAGO-RAMOS.jpg',
+    rol:'Estudiante 3ro BTI "E"', 
+    desc:'Investigador y colaborador del proyecto.' 
+  },
+  { 
+    nombre:'Christopher Tobar', 
+    imagen: 'https://i.ibb.co/4R1gYxsC/TOBAR.jpg',
+    rol:'Estudiante 3ro BTI "E"', 
+    desc:'Investigador y colaborador del proyecto.' 
+  }
+];
+
+function renderPlatos(tipo) {
+  const grid = document.getElementById('platosGrid');
+  const lista = tipo === 'todos' ? platos : platos.filter(p => p.tipo === tipo || (tipo === 'otros' && !['calvas','catamayo','loja','saraguro','zapotillo'].includes(p.tipo)));
+  grid.innerHTML = lista.map(p => `
+    <div class="plato-card reveal" onclick="openModal(${p.id})">
+            <img src="${p.imagen}" class="plato-img" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/280x200?text=${encodeURIComponent(p.nombre)}'">
+      <span class="plato-badge">${p.canton}</span>
+      <div class="plato-body">
+        <div class="plato-canton">${p.canton}</div>
+        <div class="plato-nombre">${p.nombre}</div>
+        <p class="plato-desc">${p.desc}</p>
+        <span class="plato-cta">Ver receta →</span>
+      </div>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+function filtrarPlatos(tipo, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPlatos(tipo);
+}
+
+function openModal(id) {
+  const p = platos.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalHeader').innerHTML = `
+      <img src="${p.imagen}" class="modal-img" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/680x260?text=${encodeURIComponent(p.nombre)}'">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  `;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-canton">${p.canton}</div>
+    <h2 class="modal-title">${p.nombre}</h2>
+    <p class="modal-desc">${p.desc}</p>
+    <div class="modal-section-title">🧂 Ingredientes</div>
+    <div class="ingredientes-list">${p.ingredientes.map(i => `<span class="ingrediente-tag">${i}</span>`).join('')}</div>
+    <div class="modal-section-title">👨‍🍳 Preparación</div>
+    <div class="preparacion">${p.preparacion}</div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay') && !e.target.classList.contains('modal-close')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderBebidas() {
+  document.getElementById('bebidasGrid').innerHTML = bebidas.map(b => `
+    <div class="bebida-card reveal" onclick="openBebidaModal('${b.nombre}')">
+      <img src="${b.imagen}" class="bebida-img" alt="${b.nombre}" style="width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:1rem;">
+      <div class="bebida-nombre">${b.nombre}</div>
+      <p class="bebida-desc">${b.desc}</p>
+    </div>
+  `).join('');
+}
+
+function openBebidaModal(nombre) {
+  const b = bebidas.find(x => x.nombre === nombre);
+  if (!b) return;
+  
+  document.getElementById('modalHeader').innerHTML = `
+    <img src="${b.imagen}" class="modal-img" alt="${b.nombre}" style="width:100%; height:260px; object-fit:cover; border-radius:20px 20px 0 0;">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  `;
+  
+  document.getElementById('modalBody').innerHTML = `
+    <h2 class="modal-title">${b.nombre}</h2>
+    <p class="modal-desc">${b.desc}</p>
+    <div class="modal-section-title">🌿 Ingredientes</div>
+    <div class="ingredientes-list">${b.ing.map(i => `<span class="ingrediente-tag">${i}</span>`).join('')}</div>
+    <div class="modal-section-title">☕ Preparación</div>
+    <div class="preparacion">${b.prep}</div>
+  `;
+  
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderPostres() {
+  document.getElementById('postresGrid').innerHTML = postres.map(p => `
+    <div class="postre-card reveal">
+      <img src="${p.imagen}" 
+           alt="${p.nombre}" 
+           style="width:100%; height:180px; object-fit:cover; border-radius:12px; margin-bottom:1rem;">
+      <div class="postre-nombre">${p.nombre}</div>
+      <p class="postre-desc">${p.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderRuta() {
+  document.getElementById('rutaTimeline').innerHTML = ruta.map(r => `
+    <div class="ruta-parada reveal" data-num="${r.num}">
+      <div class="ruta-canton">Parada ${r.num} — ${r.canton}</div>
+      <h3>${r.plato}</h3>
+      <p>${r.desc}</p>
+      <div class="ruta-tags">${r.tags.map(t => `<span class="ruta-tag">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function renderRestaurantes() {
+  const stars = r => '★'.repeat(Math.floor(r)) + (r % 1 >= 0.5 ? '½' : '');
+  document.getElementById('restGrid').innerHTML = restaurantes.map(r => `
+    <div class="rest-card reveal">
+      <div class="rest-header">
+        <div class="rest-name">${r.nombre}</div>
+        <div class="rest-rating">${stars(r.rating)} ${r.rating} <span>(${r.reviews.toLocaleString()} reseñas)</span></div>
+      </div>
+      <div class="rest-body">
+        <div class="rest-info">
+          <div class="rest-info-item"><strong>📍 Dirección</strong> <span>${r.direccion}</span></div>
+          <div class="rest-info-item"><strong>🕐 Horario</strong> <span>${r.horario}</span></div>
+          <div class="rest-info-item"><strong>📞 Teléfono</strong> <span>${r.telefono}</span></div>
+        </div>
+        <a href="${r.maps}" target="_blank" class="rest-map-btn">📍 Ver en Google Maps</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEquipo() {
+  document.getElementById('equipoGrid').innerHTML = equipo.map(m => `
+    <div class="miembro-card reveal">
+      <div class="miembro-avatar" style="width:120px; height:120px; padding:0; overflow:hidden; border-radius:50%; margin:0 auto 1rem;">
+        <img src="${m.imagen}" 
+             alt="${m.nombre}" 
+             style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="miembro-nombre">${m.nombre}</div>
+      <div class="miembro-rol">${m.rol}</div>
+      <p class="miembro-desc">${m.desc}</p>
+    </div>
+  `).join('');
+
+  // Misión, Visión y Valores (se mantiene igual)
+  document.getElementById('mvGrid').innerHTML = `
+    <div class="mv-card reveal">
+      <div class="mv-icon">🎯</div>
+      <div class="mv-title">Misión</div>
+      <p class="mv-text">Documentar, preservar y difundir la gastronomía tradicional lojana como patrimonio cultural inmaterial del Ecuador, conectando las nuevas generaciones con las raíces culinarias de la provincia.</p>
+    </div>
+    <div class="mv-card reveal">
+      <div class="mv-icon">🌟</div>
+      <div class="mv-title">Visión</div>
+      <p class="mv-text">Convertir a Loja en referente gastronómico del Ecuador, posicionando su cocina en la agenda cultural y turística nacional e internacional como símbolo de identidad y biodiversidad.</p>
+    </div>
+    <div class="mv-card reveal">
+      <div class="mv-icon">💎</div>
+      <div class="mv-title">Valores</div>
+      <div class="valores-list">
+        <span class="valor-tag">Identidad</span>
+        <span class="valor-tag">Respeto ancestral</span>
+        <span class="valor-tag">Sostenibilidad</span>
+        <span class="valor-tag">Comunidad</span>
+        <span class="valor-tag">Orgullo lojano</span>
+        <span class="valor-tag">Innovación</span>
+      </div>
+    </div>
+  `;
+}
+
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => obs.observe(el));
+}
+
+renderPlatos('todos');
+renderBebidas();
+renderPostres();
+renderRuta();
+renderRestaurantes();
+renderEquipo();
+observeReveal();
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
